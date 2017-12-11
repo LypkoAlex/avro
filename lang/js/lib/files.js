@@ -203,6 +203,7 @@ BlockDecoder.prototype._decodeHeader = function () {
   this._readValue = createReader(this._decode, this._type);
   this._syncMarker = header.sync;
   this.emit('metadata', this._type, codec, header);
+  this.emit('header', header.meta);
   return true;
 };
 

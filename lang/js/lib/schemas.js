@@ -1925,7 +1925,6 @@ function Field(attrs, opts) {
   if (typeof name != 'string' || !NAME_PATTERN.test(name)) {
     throw new Error(f('invalid field name: %s', name));
   }
-
   this._name = name;
   this._type = createType(attrs.type, opts);
   this._aliases = attrs.aliases || [];
@@ -1942,6 +1941,7 @@ function Field(attrs, opts) {
         throw new Error(f('invalid order: %j', order));
     }
   })(attrs.order === undefined ? 'ascending' : attrs.order);
+  // console.log('/////////////////////////createType//////////////////////////', attrs)
 
   var value = attrs['default'];
   if (value !== undefined) {
@@ -1950,14 +1950,14 @@ function Field(attrs, opts) {
     // allowed instead).
     // http://apache-avro.679487.n3.nabble.com/field-union-default-in-Java-td1175327.html
     var type = this._type;
-    var val = type._copy(value, {coerce: 2, wrap: 2});
-    // The clone call above will throw an error if the default is invalid.
-    if (type instanceof PrimitiveType && !(type instanceof BytesType)) {
-      // These are immutable.
-      this.getDefault = function () { return val; };
-    } else {
-      this.getDefault = function () { return type._copy(val); };
-    }
+    // var val = type._copy(value, {coerce: 2, wrap: 2});
+    // // The clone call above will throw an error if the default is invalid.
+    // if (type instanceof PrimitiveType && !(type instanceof BytesType)) {
+    //   // These are immutable.
+    //   this.getDefault = function () { return val; };
+    // } else {
+    //   this.getDefault = function () { return type._copy(val); };
+    // }
   }
 }
 
@@ -2204,6 +2204,7 @@ function throwInvalidError(path, val, type) {
 
 module.exports = {
   createType: createType,
+  createTypeDecorator : createTypeDecorator,
   resolveNames: resolveNames, // Protocols use the same name resolution logic.
   stringify: stringify,
   types: (function () {

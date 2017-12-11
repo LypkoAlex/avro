@@ -555,6 +555,13 @@ function createFileDecoder(path, opts) {
 }
 
 
+function createBufferDecoder(buff, opts) {
+  const bufferStream = new stream.PassThrough();
+  bufferStream.end(buff);
+
+  return bufferStream.pipe(new BlockDecoder(opts));
+}
+
 /**
  * Writable stream of records to a local Avro file.
  *
@@ -660,6 +667,7 @@ module.exports = {
   parse: parse,
   createFileDecoder: createFileDecoder,
   createFileEncoder: createFileEncoder,
+  createBufferDecoder : createBufferDecoder,
   extractFileHeader: extractFileHeader,
   streams: {
     RawDecoder: RawDecoder,

@@ -39,6 +39,7 @@ module.exports = {
   Protocol: protocols.Protocol,
   parse: files.parse,
   createFileDecoder: files.createFileDecoder,
+  createBufferDecoder: files.createBufferDecoder,
   createFileEncoder: files.createFileEncoder,
   extractFileHeader: files.extractFileHeader,
   streams: files.streams,

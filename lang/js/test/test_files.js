@@ -550,6 +550,25 @@ suite('files', function () {
       });
   });
 
+  test('createFileDecoder', function (cb) {
+    var n = 0;
+    var type = loadSchema(path.join(DPATH, 'Person.avsc'));
+    var avroFile = fs.readFileSync(path.join(DPATH, 'person-10.avro'));
+
+    files.createBufferDecoder(avroFile)
+      .on('metadata', function (writerType) {
+        assert.equal(writerType.toString(), type.toString());
+      })
+      .on('data', function (obj) {
+        n++;
+        assert(type.isValid(obj));
+      })
+      .on('end', function () {
+        assert.equal(n, 10);
+        cb();
+      });
+  });
+
   test('createFileEncoder', function (cb) {
     var type = createType({
       type: 'record',
